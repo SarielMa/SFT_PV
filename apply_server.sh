@@ -37,4 +37,4 @@ python -c "import torch; print('torch cuda:', torch.version.cuda); print('gpus:'
 nvidia-smi
 
 cd /home/lm2445/project_pi_sjf37/lm2445/PV_multiagent/sft
-sh run_sft_deep_speed.sh
+sh run_sft_ddp.sh
