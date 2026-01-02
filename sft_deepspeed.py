@@ -25,6 +25,8 @@ from transformers import (
     BitsAndBytesConfig,
 )
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
+import os
+
 
 
 # ---------------------------
@@ -123,6 +125,24 @@ def main():
     # Optional eval
     parser.add_argument("--do_eval", action="store_true", help="Run eval if test split exists.")
     args = parser.parse_args()
+    # if args.local_rank is not None and args.local_rank >= 0:
+    #     torch.cuda.set_device(args.local_rank)
+    # print(f"[local_rank={args.local_rank}] CUDA_VISIBLE_DEVICES={os.environ.get('CUDA_VISIBLE_DEVICES')}")
+    # args = parser.parse_args()
+    
+    # Robust GPU binding for DeepSpeed/DDP
+    # DeepSpeed passes --local_rank, and also sets LOCAL_RANK in env in many setups.
+    local_rank = args.local_rank
+    if local_rank is None or local_rank < 0:
+        env_lr = os.environ.get("LOCAL_RANK")
+        if env_lr is not None:
+            local_rank = int(env_lr)
+    
+    if local_rank is not None and local_rank >= 0:
+        torch.cuda.set_device(local_rank)
+    
+    print(f"[local_rank={local_rank}] CUDA_VISIBLE_DEVICES={os.environ.get('CUDA_VISIBLE_DEVICES')}", flush=True)
+
 
     out_dir = Path(args.output_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
