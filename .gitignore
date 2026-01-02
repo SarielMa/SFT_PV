@@ -56,3 +56,4 @@ __pycache__/
 *.tsv
 *.txt
 *.arrow
+*.pth
