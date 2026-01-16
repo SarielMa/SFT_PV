@@ -124,10 +124,13 @@ export HF_HOME="/nfs/roberts/scratch/pi_sjf37/gp528/.cache/huggingface"
 export HF_DATASETS_CACHE="$HF_HOME/datasets"
 mkdir -p "$HF_HOME" "$HF_DATASETS_CACHE"
 
-# HuggingFace token
-export HF_TOKEN="hf-token"
+# ---- Secrets (DO NOT hardcode) ----
+: "${HF_TOKEN:?HF_TOKEN is not set}"
 export HUGGING_FACE_HUB_TOKEN="$HF_TOKEN"
-export WANDB_API_KEY="api key"
+
+# Disable Weights & Biases unless explicitly enabled
+export WANDB_DISABLED="${WANDB_DISABLED:-true}"
+
 
 # Training environment
 export PYTHONUNBUFFERED=1

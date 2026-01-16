@@ -55,7 +55,7 @@ class Config:
     weight_diff_tokens: float = 1.2
 
     # Training
-    num_train_epochs: int = 1
+    num_train_epochs: int = 3
     per_device_train_batch_size: int = 1
     gradient_accumulation_steps: int = 2
     learning_rate: float = 2e-4
