@@ -10,7 +10,7 @@ RESULTS_ROOT="results"
 
 TASKS="PvExtraction_full"
 DTYPE="bf16"
-TP=1
+TP=2
 GPU_MEM_UTIL=0.90
 MAX_LEN=8096
 
@@ -19,10 +19,10 @@ MAX_LEN=8096
 ############################################
 MODELS=(
   "meta-llama/Llama-3.3-70B-Instruct"
-  "Qwen/QwQ-32B-AWQ"
-  "meta-llama/Llama-3.1-8B-Instruct"
-  "meta-llama/Llama-3.2-3B-Instruct"
-  "Qwen/Qwen2.5-1.5B-Instruct"
+  #"Qwen/QwQ-32B-AWQ"
+  #"meta-llama/Llama-3.1-8B-Instruct"
+  #"meta-llama/Llama-3.2-3B-Instruct"
+  #"Qwen/Qwen2.5-1.5B-Instruct"
 )
 
 ############################################
@@ -38,9 +38,9 @@ safe_name () {
 for BASE_MODEL in "${MODELS[@]}"; do
   NAME="$(safe_name "${BASE_MODEL}")"
 
-  ADAPTER_DIR="${SFT_ROOT}/pv_sft_${NAME}_qlora_epoch3/lora_adapter"
-  MERGED_DIR="${SFT_ROOT}/pv_sft_${NAME}_merged_epoch3"
-  OUT_PATH="${RESULTS_ROOT}/PV_qlora_${NAME}_merged_epoch3"
+  ADAPTER_DIR="${SFT_ROOT}/pv_sft_${NAME}_qlora_ddp2_epoch10/lora_adapter"
+  MERGED_DIR="${SFT_ROOT}/pv_sft_${NAME}_merged_epoch10"
+  OUT_PATH="${RESULTS_ROOT}/PV_qlora_${NAME}_merged_epoch10"
 
   echo "============================================================"
   echo "Model       : ${BASE_MODEL}"
