@@ -57,3 +57,16 @@ __pycache__/
 *.txt
 *.arrow
 *.pth
+# SFT & DPO outputs
+runs_pv/
+dpo_pipeline_outputs/
+
+# HuggingFace / Trainer checkpoints
+**/checkpoint-*/
+
+# LoRA adapter artifacts
+**/sft_adapter/
+**/lora_adapter/
+
+# README files generated inside checkpoints
+**/checkpoint-*/README.md

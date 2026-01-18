@@ -4,12 +4,15 @@ set -euo pipefail
 # =========================
 # CONFIG (edit if needed)
 # =========================
-SFT_MODEL="/home/lm2445/project_pi_sjf37/lm2445/PV_multiagent/sft/runs/pv_sft_Qwen2.5-1.5B-Instruct_merged_epoch10"
+# "pv_sft_meta-llama_Llama-3.1-8B-Instruct_merged_epoch10"
+# "pv_sft_meta-llama_Llama-3.2-3B-Instruct_merged_epoch10"
+# "pv_sft_meta-llama_Llama-3.3-70B-Instruct_merged_epoch10"
+SFT_MODEL="/home/lm2445/project_pi_sjf37/lm2445/PV_multiagent/sft/runs/pv_sft_meta-llama_Llama-3.1-8B-Instruct_merged_epoch10"
 DATA_DIR="/home/lm2445/project_pi_sjf37/lm2445/PV_multiagent/benckmark/PV_benckmark/split_out/non_test/"
 FINBEN_TASKS_PATH="/home/lm2445/project_pi_sjf37/lm2445/finben/FinBen/tasks/pv_miner"
 
 # One knob to rule them all (keep these the same)
-TP=1
+TP=2
 NUM_GPUS="${TP}"
 TENSOR_PARALLEL_SIZE="${TP}"
 
