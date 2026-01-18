@@ -13,7 +13,7 @@ FINBEN_TASKS_PATH="/home/lm2445/project_pi_sjf37/lm2445/finben/FinBen/tasks/pv_m
 EPOCHS=3   # must match SFT
 
 # One knob to rule them all
-TP=2
+TP=1
 NUM_GPUS="${TP}"
 TENSOR_PARALLEL_SIZE="${TP}"
 
@@ -30,9 +30,9 @@ PRINT_SAMPLES=3
 # MODELS (same as SFT)
 # =========================
 MODELS=(
-  "meta-llama/Llama-3.3-70B-Instruct"
-  "meta-llama/Llama-3.1-8B-Instruct"
-  "meta-llama/Llama-3.2-3B-Instruct"
+  #"meta-llama/Llama-3.3-70B-Instruct"
+  #"meta-llama/Llama-3.1-8B-Instruct"
+  #"meta-llama/Llama-3.2-3B-Instruct"
   "Qwen/Qwen2.5-1.5B-Instruct"
 )
 
