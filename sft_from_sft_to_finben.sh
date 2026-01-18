@@ -96,17 +96,17 @@ for MODEL in "${MODELS[@]}"; do
   # --------------------------------------------------
   # 1) SFT (QLoRA, DDP)   (currently commented out as you had)
   # --------------------------------------------------
-  # torchrun --nproc_per_node="${TP}" "${PY_SCRIPT}" \
-  #   --dataset_path "${DATASET_PATH}" \
-  #   --model_name "${MODEL}" \
-  #   --output_dir "${ADAPTER_DIR}" \
-  #   --use_qlora --bf16 \
-  #   --max_length "${MAX_LEN}" \
-  #   --batch_size "${BATCH_SIZE}" \
-  #   --grad_accum "${GA}" \
-  #   --epochs "${EPOCHS}" \
-  #   --lr "${LR}" \
-  #   2>&1 | tee "${LOG_DIR}/sft.log"
+  torchrun --nproc_per_node="${TP}" "${PY_SCRIPT}" \
+    --dataset_path "${DATASET_PATH}" \
+    --model_name "${MODEL}" \
+    --output_dir "${ADAPTER_DIR}" \
+    --use_qlora --bf16 \
+    --max_length "${MAX_LEN}" \
+    --batch_size "${BATCH_SIZE}" \
+    --grad_accum "${GA}" \
+    --epochs "${EPOCHS}" \
+    --lr "${LR}" \
+    2>&1 | tee "${LOG_DIR}/sft.log"
 
   # --------------------------------------------------
   # 2) Merge LoRA → full model
