@@ -60,6 +60,8 @@ __pycache__/
 # SFT & DPO outputs
 runs_pv/
 dpo_pipeline_outputs/
+runs/
+dpo_runs/
 
 # HuggingFace / Trainer checkpoints
 **/checkpoint-*/
