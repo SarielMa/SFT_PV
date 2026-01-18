@@ -1,6 +1,6 @@
 # SFT_PV
 
-
+```bash
 runs_pv/
 └── <ModelName>/                     # e.g. Qwen2.5-1.5B-Instruct
     └── epoch<EPOCHS>/               # e.g. epoch3
@@ -22,8 +22,9 @@ runs_pv/
             ├── merge.log
             └── eval_PvExtraction_full.log
 
+```
 
-
+```bash
 dpo_pipeline_outputs/
 └── <ModelName>_epoch<EPOCHS>_sftMerged/
     ├── confusion/                   # confusion matrices from SFT model
@@ -54,3 +55,4 @@ dpo_pipeline_outputs/
         ├── train_dpo.log
         ├── merge.log
         └── eval.log
+```bash
