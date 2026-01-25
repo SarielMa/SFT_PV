@@ -20,7 +20,7 @@ ABL_OUT_ROOT="$(readlink -f "${ABL_OUT_ROOT}")"
 FINBEN_TASKS_PATH="/home/lm2445/project_pi_sjf37/lm2445/finben/FinBen/tasks/pv_miner"
 
 # One knob to rule them all
-TP=1
+TP=2
 NUM_GPUS="${TP}"
 TENSOR_PARALLEL_SIZE="${TP}"
 
@@ -71,7 +71,7 @@ echo "============================================================"
 # TAG is used in output folder naming.
 ABLATIONS=(
   # Baseline = all false (optional but useful)
-  "all_false|"
+  #"all_false|"
 
   # # enable_class_balance ablation (default False -> True)
   "class_balance=True|--enable_class_balance True"
