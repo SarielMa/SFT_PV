@@ -126,7 +126,7 @@ def main():
     ap.add_argument("--epochs", type=int, default=3, help="epoch number used in SFT (epochX)")
     ap.add_argument("--shot", type=int, default=0)
     ap.add_argument("--task", type=str, default="PvExtraction_full")
-    ap.add_argument("--out_csv", type=str, default="DPO_results.csv")
+    ap.add_argument("--out_csv", type=str, default="ablation_results.csv")
     ap.add_argument("--models", nargs="+", required=True, help='HF ids like meta-llama/Llama-3.2-3B-Instruct')
     ap.add_argument(
         "--latest_only",
