@@ -67,10 +67,6 @@ po_runs/
 po_ablation_runs/
 po_runs_claude/
 
-# or more flexible (recommended)
-po_runs*/
-po_ablation_runs*/
-
 # HuggingFace / Trainer checkpoints
 **/checkpoint-*/
 
