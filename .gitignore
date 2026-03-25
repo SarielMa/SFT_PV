@@ -62,6 +62,14 @@ runs_pv/
 dpo_pipeline_outputs/
 runs/
 dpo_runs/
+# ignore all run outputs
+po_runs/
+po_ablation_runs/
+po_runs_claude/
+
+# or more flexible (recommended)
+po_runs*/
+po_ablation_runs*/
 
 # HuggingFace / Trainer checkpoints
 **/checkpoint-*/
