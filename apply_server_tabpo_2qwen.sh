@@ -1,9 +1,9 @@
 #!/bin/bash
-#SBATCH --job-name=dpo_8b
+#SBATCH --job-name=dpo_2qwen
 #SBATCH --mail-type=ALL
-#SBATCH --time=00-5:00:00
+#SBATCH --time=00-15:00:00
 #SBATCH --nodes=1
-#SBATCH --gpus=h200:2
+#SBATCH --gpus=h200:1
 #SBATCH --mem=256G
 #SBATCH --partition=gpu_h200
 #SBATCH --output=%j_gpu_job.txt
@@ -37,6 +37,6 @@ python -c "import torch; print('torch cuda:', torch.version.cuda); print('gpus:'
 nvidia-smi
 
 cd /home/lm2445/project_pi_sjf37/lm2445/PV_multiagent/sft
-sh dpo_from_confusion_to_eval_8b.sh
+sh dpo_from_confusion_to_eval_all.sh
 
 

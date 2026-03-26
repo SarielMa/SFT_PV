@@ -66,6 +66,7 @@ dpo_runs/
 po_runs/
 po_ablation_runs/
 po_runs_claude/
+comparison*/
 
 # HuggingFace / Trainer checkpoints
 **/checkpoint-*/

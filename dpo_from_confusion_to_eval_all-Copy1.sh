@@ -5,7 +5,7 @@ set -euo pipefail
 # GLOBAL CONFIG
 # =========================
 SFT_RUNS_ROOT="$(readlink -f ./runs_pv)"   # SFT pipeline output root
-DPO_OUT_ROOT="$(readlink -f ./dpo_pipeline_outputs2)"
+DPO_OUT_ROOT="$(readlink -f ./dpo_pipeline_outputs)"
 
 DATA_DIR="/home/lm2445/project_pi_sjf37/lm2445/PV_multiagent/benckmark/PV_benckmark/split_out/non_test/"
 FINBEN_TASKS_PATH="/home/lm2445/project_pi_sjf37/lm2445/finben/FinBen/tasks/pv_miner"
@@ -13,7 +13,7 @@ FINBEN_TASKS_PATH="/home/lm2445/project_pi_sjf37/lm2445/finben/FinBen/tasks/pv_m
 EPOCHS=3   # must match SFT
 
 # One knob to rule them all
-TP=1
+TP=2
 NUM_GPUS="${TP}"
 TENSOR_PARALLEL_SIZE="${TP}"
 
@@ -30,11 +30,10 @@ PRINT_SAMPLES=3
 # MODELS (same as SFT)
 # =========================
 MODELS=(
-  # "meta-llama/Llama-3.3-70B-Instruct"
-  # "meta-llama/Llama-3.1-8B-Instruct"
-  # "meta-llama/Llama-3.2-3B-Instruct"
-  "Qwen/Qwen2.5-7B-Instruct"
-  "Qwen/Qwen2.5-14B-Instruct"
+  "meta-llama/Llama-3.3-70B-Instruct"
+  "meta-llama/Llama-3.1-8B-Instruct"
+  "meta-llama/Llama-3.2-3B-Instruct"
+  "Qwen/Qwen2.5-1.5B-Instruct"
 )
 
 mkdir -p "${DPO_OUT_ROOT}"

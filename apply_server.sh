@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --job-name=sft_4models
+#SBATCH --job-name=sft_2models
 #SBATCH --mail-type=ALL
-#SBATCH --time=00-15:00:00
+#SBATCH --time=00-10:00:00
 #SBATCH --nodes=1
 #SBATCH --gpus=h200:2
 #SBATCH --mem=256G

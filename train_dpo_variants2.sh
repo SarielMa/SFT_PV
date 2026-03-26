@@ -12,7 +12,8 @@ DATA_PATH="/home/lm2445/project_pi_sjf37/lm2445/PV_multiagent/sft/dpo_pipeline_o
 TRAIN_SCRIPT="train_dpo_variants.py"
 MERGE_SCRIPT="merge_lora.py"
 
-METHODS=("dpo" "ipo" "cal_dpo" "dpop")
+# METHODS=("dpo" "ipo" "cal_dpo" "dpop")
+METHODS=("cal_dpo" "dpop")
 
 SEEDS=(42 123 2024)
 
