@@ -13,7 +13,7 @@ TRAIN_SCRIPT="train_dpo_ablation.py"
 MERGE_SCRIPT="merge_lora.py"
 
 # 🔥 beta sweep
-BETAS=(0.99 0.95 0.90 0.85)
+BETAS=(0.80 0.92 0.93)
 # BETAS=(0.99)
 # eval configs
 TENSOR_PARALLEL_SIZE=2
