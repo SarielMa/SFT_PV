@@ -13,8 +13,8 @@ TRAIN_SCRIPT="train_dpo_ablation.py"
 MERGE_SCRIPT="merge_lora.py"
 
 # 🔥 beta sweep
-BETAS=(0.90 0.85)
-# BETAS=(0.99)
+# BETAS=(0.90 0.85)
+BETAS=(0.99)
 # eval configs
 TENSOR_PARALLEL_SIZE=1
 GPU_MEM_UTIL=0.9
@@ -22,7 +22,7 @@ MAX_MODEL_LEN=8192
 
 FINBEN_TASKS_PATH="/home/lm2445/project_pi_sjf37/lm2445/finben/FinBen/tasks/pv_miner"
 
-BASE_OUT_DIR="/home/lm2445/project_pi_sjf37/lm2445/PV_multiagent/sft/po_ablation_runs"
+BASE_OUT_DIR="/home/lm2445/project_pi_sjf37/lm2445/PV_multiagent/sft/po_ablation_runs_0330"
 
 ########################################
 # Loop over beta
@@ -59,13 +59,13 @@ for BETA in "${BETAS[@]}"; do
     --enable_length_norm False \
     --length_norm_by "tokens" \
     \
-    --enable_token_weighting False \
-    --token_weight_code 1.1 \
-    --token_weight_subcode 1.2 \
-    --token_weight_span 1.1 \
+    --enable_token_weighting True \
+    --token_weight_code 1.5 \
+    --token_weight_subcode 1.1 \
+    --token_weight_span 1.02 \
     --normalize_by_weight_mass True \
     \
-    --enable_class_balance True \
+    --enable_class_balance False \
     --class_balance_strategy "effective_num" \
     --class_balance_beta ${BETA} \
     --class_balance_alpha 1.0 \

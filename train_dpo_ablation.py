@@ -46,7 +46,7 @@ class Config:
 
     # DPO parameters
     beta: float = 0.5
-    policy_prob_threshold: float = 0.9
+    policy_prob_threshold: float = 0.66 # default 0.66
     sft_barrier_weight: float = 1.5
 
     # Token weighting (toggleable; defaults preserve your current behavior)
@@ -829,7 +829,7 @@ def main():
     parser.add_argument("--num_gpus", type=int, default=1)
     parser.add_argument("--system_prompt", type=str, default="You are a helpful assistant.")
     # ----- toggles (match SFT flag names) -----
-    parser.add_argument("--enable_length_norm", type=str2bool, default=True)
+    parser.add_argument("--enable_length_norm", type=str2bool, default=False)
     parser.add_argument("--length_norm_by", type=str, default="tokens", choices=["tokens", "weight_mass"])
 
     parser.add_argument("--enable_token_weighting", type=str2bool, default=True)

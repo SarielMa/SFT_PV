@@ -245,6 +245,78 @@ python \
   --class_balance_use_code False \
   --class_balance_use_subcode True
 
+python \
+  /nfs/roberts/scratch/pi_sjf37/gp528/FinBen/Llama_eightb_train/train_dpo_ablation.py \
+  --model_name "$MODEL_NAME" \
+  --train_data_path "$TRAIN_DATA" \
+  --valid_data_path "$VALID_DATA" \
+  --output_dir "$OUTPUT_DIR" \
+  --num_gpus 1 \
+  --system_prompt "You are a helpful assistant." \
+  --enable_length_norm False \
+  --length_norm_by "tokens" \
+  --enable_token_weighting False \
+  --token_weight_code 1.1 \
+  --token_weight_subcode 1.2 \
+  --token_weight_span 1.1 \
+  --normalize_by_weight_mass True \
+  --enable_class_balance True \
+  --class_balance_strategy "effective_num" \
+  --class_balance_beta 0.99 \
+  --class_balance_alpha 1.0 \
+  --class_balance_combine "mean" \
+  --class_balance_max_weight 3.0 \
+  --class_balance_use_code False \
+  --class_balance_use_subcode True
+
+python \
+  /nfs/roberts/scratch/pi_sjf37/gp528/FinBen/Llama_eightb_train/train_dpo_ablation.py \
+  --model_name "$MODEL_NAME" \
+  --train_data_path "$TRAIN_DATA" \
+  --valid_data_path "$VALID_DATA" \
+  --output_dir "$OUTPUT_DIR" \
+  --num_gpus 1 \
+  --system_prompt "You are a helpful assistant." \
+  --enable_length_norm False \
+  --length_norm_by "tokens" \
+  --enable_token_weighting False \
+  --token_weight_code 1.1 \
+  --token_weight_subcode 1.2 \
+  --token_weight_span 1.1 \
+  --normalize_by_weight_mass True \
+  --enable_class_balance True \
+  --class_balance_strategy "effective_num" \
+  --class_balance_beta 0.99 \
+  --class_balance_alpha 1.0 \
+  --class_balance_combine "mean" \
+  --class_balance_max_weight 3.0 \
+  --class_balance_use_code False \
+  --class_balance_use_subcode True
+
+python \
+  /nfs/roberts/scratch/pi_sjf37/gp528/FinBen/Llama_eightb_train/train_dpo_ablation.py \
+  --model_name "$MODEL_NAME" \
+  --train_data_path "$TRAIN_DATA" \
+  --valid_data_path "$VALID_DATA" \
+  --output_dir "$OUTPUT_DIR" \
+  --num_gpus 1 \
+  --system_prompt "You are a helpful assistant." \
+  --enable_length_norm False \
+  --length_norm_by "tokens" \
+  --enable_token_weighting False \
+  --token_weight_code 1.1 \
+  --token_weight_subcode 1.2 \
+  --token_weight_span 1.1 \
+  --normalize_by_weight_mass True \
+  --enable_class_balance True \
+  --class_balance_strategy "effective_num" \
+  --class_balance_beta 0.99 \
+  --class_balance_alpha 1.0 \
+  --class_balance_combine "mean" \
+  --class_balance_max_weight 3.0 \
+  --class_balance_use_code False \
+  --class_balance_use_subcode True
+
 EXIT_CODE=$?
 
 echo ""
