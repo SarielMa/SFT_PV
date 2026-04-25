@@ -1,12 +1,12 @@
 #!/bin/bash
-#SBATCH --job-name=po_tdpo
+#SBATCH --job-name=po_ipo
 #SBATCH --mail-type=ALL
 #SBATCH --time=00-18:00:00
 #SBATCH --nodes=1
 #SBATCH --gpus=h200:2
 #SBATCH --mem=256G
 #SBATCH --partition=gpu_h200
-#SBATCH --output=%j_po_tdpo.txt
+#SBATCH --output=%j_po_ipo.txt
 #SBATCH --mail-user=linhai.ma@yale.edu
 
 set -euo pipefail
@@ -33,4 +33,4 @@ python -c "import torch; print('torch cuda:', torch.version.cuda); print('gpus:'
 nvidia-smi
 
 cd /home/lm2445/project_pi_sjf37/lm2445/PV_multiagent/sft
-bash train_dpo_variants.sh tdpo
+bash train_dpo_variants_small_test.sh ipo

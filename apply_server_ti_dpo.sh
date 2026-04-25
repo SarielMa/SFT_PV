@@ -24,7 +24,7 @@ mkdir -p "$TRITON_CACHE_DIR"
 
 module load miniconda
 source "$(conda info --base)/etc/profile.d/conda.sh"
-conda activate finben_vllm3
+conda activate finben_202604
 
 which nvcc
 nvcc --version
