@@ -67,6 +67,7 @@ po_runs/
 po_ablation_runs/
 po_runs_claude/
 comparison*/
+po_variants_runs_april24/
 
 # HuggingFace / Trainer checkpoints
 **/checkpoint-*/
