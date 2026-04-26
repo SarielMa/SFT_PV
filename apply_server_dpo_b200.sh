@@ -13,7 +13,7 @@ set -euo pipefail
 
 module purge
 module load StdEnv || true
-module load CUDA/12.6.0
+module load CUDA/12.8.0
 
 export CUDA_HOME=$(dirname $(dirname $(which nvcc)))
 export PATH=$CUDA_HOME/bin:$PATH
@@ -24,7 +24,7 @@ mkdir -p "$TRITON_CACHE_DIR"
 
 module load miniconda
 source "$(conda info --base)/etc/profile.d/conda.sh"
-conda activate finben_202604
+conda activate finben_b200
 
 which nvcc
 nvcc --version
