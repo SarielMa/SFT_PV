@@ -1,18 +1,31 @@
 #!/bin/bash
-#SBATCH --job-name=po_dpop
+#SBATCH --job-name=sft_llama31_8b
 #SBATCH --mail-type=ALL
-#SBATCH --time=00-18:00:00
+#SBATCH --time=06:00:00
 #SBATCH --nodes=1
 #SBATCH --gpus=b200:2
 #SBATCH --mem=256G
 #SBATCH --partition=gpu_b200
-#SBATCH --output=%j_po_dpop_b200.txt
+#SBATCH --output=%j_sft_llama31_8b_b200.txt
 #SBATCH --mail-user=linhai.ma@yale.edu
 
 set -euo pipefail
+set -x
 
-REPO_ROOT="/home/lm2445/project_pi_sjf37/lm2445/PV_multiagent/sft"
-TRAIN_SH="${REPO_ROOT}/train_dpo_variants_for_b200.sh"
+export PS4='+ [${BASH_SOURCE##*/}:${LINENO}] '
+timestamp() { date '+%Y-%m-%d %H:%M:%S'; }
+log() { echo "[$(timestamp)] $*"; }
+trap 'rc=$?; echo "[ERROR] rc=${rc} line=${LINENO} cmd=${BASH_COMMAND}" >&2; exit $rc' ERR
+
+REPO_ROOT="${SLURM_SUBMIT_DIR:-$(pwd)}"
+RUN_SCRIPT="${REPO_ROOT}/run_sft_from_sft_to_finben_b200_llama31_8b.sh"
+
+log "SFT submit bootstrap start"
+log "hostname=$(hostname)"
+log "pwd=$(pwd)"
+log "user=${USER:-unknown}"
+log "shell=${SHELL:-unknown}"
+log "repo_root=${REPO_ROOT}"
 
 for var in CONDA_EXE CONDA_PREFIX CONDA_PREFIX_1 CONDA_PREFIX_2 CONDA_DEFAULT_ENV CONDA_PROMPT_MODIFIER CONDA_SHLVL CONDA_PYTHON_EXE CONDA_PKGS_DIRS CONDA_ENVS_PATH _CE_CONDA _CE_M _CONDA_EXE _CONDA_ROOT; do
   unset "${var}" || true
@@ -43,7 +56,7 @@ export PATH="${CUDA_HOME}/bin:${PATH}"
 export LD_LIBRARY_PATH="${CUDA_HOME}/lib64:${LD_LIBRARY_PATH:-}"
 
 export TRITON_CACHE_DIR="/tmp/${USER}/triton_cache"
-mkdir -p "$TRITON_CACHE_DIR"
+mkdir -p "${TRITON_CACHE_DIR}"
 
 module load miniconda
 
@@ -60,12 +73,21 @@ fi
 
 conda activate finben_b200
 
+cd "${REPO_ROOT}"
+
+log "Environment check"
 which nvcc
 nvcc --version
 which python
+python --version
 python -c "import torch; print('torch cuda:', torch.version.cuda); print('gpus:', torch.cuda.device_count())"
+which torchrun
+which lm_eval
 nvidia-smi
 
-cd "${REPO_ROOT}"
-[[ -f "${TRAIN_SH}" ]] || { echo "Missing training script: ${TRAIN_SH}" >&2; exit 1; }
-bash "${TRAIN_SH}" dpop
+if [[ ! -f "${RUN_SCRIPT}" ]]; then
+  echo "Missing run script: ${RUN_SCRIPT}" >&2
+  exit 1
+fi
+
+exec bash "${RUN_SCRIPT}" "${REPO_ROOT}"

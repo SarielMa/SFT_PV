@@ -1,27 +1,37 @@
 #!/bin/bash
 
-set -e
+set -euo pipefail
 
 REQUESTED_METHOD="${1:-}"
+REPO_ROOT="/home/lm2445/project_pi_sjf37/lm2445/PV_multiagent/sft"
 
 ########################################
 # Base configs
 ########################################
 
-SFT_RESULTS_DIR="/home/lm2445/project_pi_sjf37/lm2445/PV_multiagent/sft/sft_results_epoch3"
+SFT_RESULTS_DIR="/home/lm2445/project_pi_sjf37/lm2445/PV_multiagent/sft/sft_3epoch"
 DPO_PIPELINE_DIR="/home/lm2445/project_pi_sjf37/lm2445/PV_multiagent/sft/dpo_pipeline_outputs"
 
 MODELS=(
   "Llama-3.1-8B-Instruct"
   "Llama-3.2-3B-Instruct"
-  "Llama-3.3-70B-Instruct"
   "Qwen2.5-1.5B-Instruct"
   "Qwen2.5-7B-Instruct"
   "Qwen2.5-14B-Instruct"
+  "Llama-3.3-70B-Instruct"
 )
 
-TRAIN_SCRIPT="train_dpo_variants_with_tdpo_tidpo.py"
-MERGE_SCRIPT="merge_lora.py"
+declare -A SFT_MODEL_DIRS=(
+  ["Llama-3.1-8B-Instruct"]="${SFT_RESULTS_DIR}/merged_llama3.1_8b_instruct_sft_3ep"
+  ["Llama-3.2-3B-Instruct"]="${SFT_RESULTS_DIR}/merged_llama3.2_3b_instruct_sft_3ep"
+  ["Llama-3.3-70B-Instruct"]="${SFT_RESULTS_DIR}/merged_void_llama3.3_70b_instruct_sft_3ep"
+  ["Qwen2.5-1.5B-Instruct"]="${SFT_RESULTS_DIR}/merged_qwen2.5_1.5b_instruct_sft_3ep"
+  ["Qwen2.5-7B-Instruct"]="${SFT_RESULTS_DIR}/merged_qwen2.5_7b_instruct_sft_3ep"
+  ["Qwen2.5-14B-Instruct"]="${SFT_RESULTS_DIR}/merged_qwen2.5_14b_instruct_sft_3ep"
+)
+
+TRAIN_SCRIPT="${REPO_ROOT}/train_dpo_variants_with_tdpo_tidpo.py"
+MERGE_SCRIPT="${REPO_ROOT}/merge_lora.py"
 
 ALL_METHODS=("dpo" "ipo" "cal_dpo" "dpop" "tdpo" "ti_dpo")
 METHODS=()
@@ -63,6 +73,31 @@ if [[ -z "${NUM_GPUS}" || "${NUM_GPUS}" -lt 1 ]]; then
   exit 1
 fi
 
+require_path() {
+  local path="$1"
+  local label="$2"
+  if [[ ! -e "${path}" ]]; then
+    echo "Missing ${label}: ${path}"
+    exit 1
+  fi
+}
+
+dataset_loadable() {
+  local path="$1"
+  python - <<'PY' "${path}"
+import sys
+from datasets import load_from_disk
+
+path = sys.argv[1]
+load_from_disk(path)
+print("OK")
+PY
+}
+
+require_path "${TRAIN_SCRIPT}" "training script"
+require_path "${MERGE_SCRIPT}" "merge script"
+require_path "${FINBEN_TASKS_PATH}" "FinBen tasks path"
+
 TENSOR_PARALLEL_SIZE="${NUM_GPUS}"
 
 echo "Detected NUM_GPUS=${NUM_GPUS}"
@@ -73,8 +108,14 @@ echo "Using tensor_parallel_size=${TENSOR_PARALLEL_SIZE}"
 ########################################
 
 for MODEL_ID in "${MODELS[@]}"; do
-  MODEL_NAME="${SFT_RESULTS_DIR}/${MODEL_ID}/epoch3/merged"
-  DATA_PATH="${DPO_PIPELINE_DIR}/${MODEL_ID}_epoch3_sftMerged/dpo_data"
+  MODEL_NAME="${SFT_MODEL_DIRS[${MODEL_ID}]:-}"
+  OUT_TAG="${MODEL_ID}_epoch3_sftMerged"
+  DATA_PATH="${DPO_PIPELINE_DIR}/${OUT_TAG}/dpo_data"
+
+  if [[ -z "${MODEL_NAME}" ]]; then
+    echo "Skipping MODEL=${MODEL_ID}: no SFT model mapping configured"
+    continue
+  fi
 
   if [[ ! -d "${MODEL_NAME}" ]]; then
     echo "Skipping MODEL=${MODEL_ID}: merged SFT model not found at ${MODEL_NAME}"
@@ -83,6 +124,13 @@ for MODEL_ID in "${MODELS[@]}"; do
 
   if [[ ! -d "${DATA_PATH}" ]]; then
     echo "Skipping MODEL=${MODEL_ID}: DPO data not found at ${DATA_PATH}"
+    echo "Generate it with: bash generate_dpo_data_from_sft_b200.sh \"${MODEL_ID}\""
+    continue
+  fi
+
+  if ! dataset_loadable "${DATA_PATH}" >/dev/null 2>&1; then
+    echo "Skipping MODEL=${MODEL_ID}: DPO data exists but is not a valid saved dataset at ${DATA_PATH}"
+    echo "Regenerate it with: bash generate_dpo_data_from_sft_b200.sh \"${MODEL_ID}\""
     continue
   fi
 
@@ -118,7 +166,7 @@ for MODEL_ID in "${MODELS[@]}"; do
         METHOD_ARGS+=(--beta 0.5)
       fi
 
-      python ${TRAIN_SCRIPT} \
+      python "${TRAIN_SCRIPT}" \
         --model_name "${MODEL_NAME}" \
         --train_data_path "${DATA_PATH}" \
         --valid_data_path "${DATA_PATH}" \
@@ -135,7 +183,7 @@ for MODEL_ID in "${MODELS[@]}"; do
       ########################################
       echo "Merging LoRA model..."
 
-      python ${MERGE_SCRIPT} \
+      python "${MERGE_SCRIPT}" \
         --base "${MODEL_NAME}" \
         --adapter "${MODEL_OUT}" \
         --out "${MERGED_DIR}" \

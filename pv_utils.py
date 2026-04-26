@@ -163,19 +163,29 @@ def evaluate_eppc_agg(items):
         t_answer = safe_json_loads(t_answer)
         p_answer = safe_json_loads(p_answer)
 
-        
-        code = [anno.get("Code") for anno in t_answer.get("results")]
-        pred_code = [pred.get("Code") for pred in p_answer.get("results")]
+        true_results = t_answer.get("results") or []
+        pred_results = p_answer.get("results") or []
+
+        if not isinstance(true_results, list):
+            true_results = []
+        if not isinstance(pred_results, list):
+            pred_results = []
+
+        true_results = [anno for anno in true_results if isinstance(anno, dict)]
+        pred_results = [pred for pred in pred_results if isinstance(pred, dict)]
+
+        code = [anno.get("Code") for anno in true_results]
+        pred_code = [pred.get("Code") for pred in pred_results]
         true_codes.append(code)
         pred_codes.append(pred_code)
 
-        sub_code = [anno.get("Sub-code") for anno in t_answer.get("results")]
-        pred_sub_code = [pred.get("Sub-code") for pred in p_answer.get("results")]
+        sub_code = [anno.get("Sub-code") for anno in true_results]
+        pred_sub_code = [pred.get("Sub-code") for pred in pred_results]
         true_sub_codes.append(sub_code)
         pred_sub_codes.append(pred_sub_code)
 
-        span = [anno.get("Span") for anno in t_answer.get("results")]
-        extracted_span = [pred.get("Span") for pred in p_answer.get("results")]
+        span = [anno.get("Span") for anno in true_results]
+        extracted_span = [pred.get("Span") for pred in pred_results]
         true_spans.append(span)
         pred_spans.append(extracted_span)
 
@@ -219,6 +229,14 @@ def calculate_jaccard_for_tokens(phrase1, phrase2):
     :param phrase2: second phrase string
     :return: Jaccard coefficient (0~1)
     """
+    if not isinstance(phrase1, str) or not isinstance(phrase2, str):
+        return 0
+
+    phrase1 = phrase1.strip()
+    phrase2 = phrase2.strip()
+    if not phrase1 or not phrase2:
+        return 0
+
     set1 = set(phrase1.lower().split())
     set2 = set(phrase2.lower().split())
 
@@ -239,6 +257,14 @@ def is_full_containment_match(phrase1, phrase2):
     :param phrase2: second phrase (str) - predicted phrase
     :return: True if phrase1 is completely contained in phrase2
     """
+    if not isinstance(phrase1, str) or not isinstance(phrase2, str):
+        return False
+
+    phrase1 = phrase1.strip()
+    phrase2 = phrase2.strip()
+    if not phrase1 or not phrase2:
+        return False
+
     set1 = set(phrase1.lower().split())
     set2 = set(phrase2.lower().split())
     
@@ -288,6 +314,3 @@ def relaxed_match_evaluation_with_full_containment(true_entities_list, pred_enti
     f1 = (2 * precision * recall) / (precision + recall) if (precision + recall) > 0 else 0
 
     return precision, recall, f1
-
-
-
