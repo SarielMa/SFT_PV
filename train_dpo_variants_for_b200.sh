@@ -51,8 +51,8 @@ else
   METHODS=("${ALL_METHODS[@]}")
 fi
 #METHODS=("dpo")
-# SEEDS=(42 123 2024)
-SEEDS=(42)
+SEEDS=(123 2024)
+#SEEDS=(42)
 
 # eval configs
 GPU_MEM_UTIL=0.9

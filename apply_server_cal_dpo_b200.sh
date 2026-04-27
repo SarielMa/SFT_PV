@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=po_cal_dpo
 #SBATCH --mail-type=ALL
-#SBATCH --time=00-18:00:00
+#SBATCH --time=00-20:00:00
 #SBATCH --nodes=1
 #SBATCH --gpus=b200:2
 #SBATCH --mem=256G
