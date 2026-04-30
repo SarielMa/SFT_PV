@@ -26,7 +26,7 @@ from pathlib import Path
 import torch
 import torch.nn.functional as F
 from datasets import load_from_disk
-from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments, Trainer
+from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments, Trainer, set_seed
 from peft import LoraConfig, get_peft_model, TaskType
 
 
@@ -649,6 +649,7 @@ def main():
     parser.add_argument("--valid_data_path", type=str, required=True)
     parser.add_argument("--output_dir", type=str, required=True)
     parser.add_argument("--num_gpus", type=int, default=1)
+    parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--system_prompt", type=str, default="You are a helpful assistant.")
     args = parser.parse_args()
 
@@ -666,6 +667,9 @@ def main():
 
     source_type, model_path = detect_model_source(cfg.model_name)
     print(f"Model source: {source_type} | Model path/ID: {model_path}")
+    print(f"Seed: {args.seed}")
+
+    set_seed(args.seed)
 
     hf_token = os.environ.get("HF_TOKEN") or os.environ.get("HUGGING_FACE_HUB_TOKEN")
 
@@ -754,6 +758,8 @@ def main():
         remove_unused_columns=False,
         gradient_checkpointing=True,
         gradient_checkpointing_kwargs={"use_reentrant": False},
+        seed=args.seed,
+        data_seed=args.seed,
     
         # ✅ correct for 4.51.3
         #eval_strategy="steps",

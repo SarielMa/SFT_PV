@@ -68,6 +68,9 @@ po_ablation_runs/
 po_runs_claude/
 comparison*/
 po_variants_runs_april24/
+po_variants_runs_april24_seed_42_123_2024/
+TABPO_3RS_6Models/
+po_variants_runs_april24
 
 # HuggingFace / Trainer checkpoints
 **/checkpoint-*/
